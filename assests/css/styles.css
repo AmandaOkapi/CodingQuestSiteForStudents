@@ -1,0 +1,39 @@
+.bar {
+    background-color: rgb(43, 39, 255);
+  }
+
+.main {
+    background-color: rgb(28, 27, 77);
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+.container {
+    width: 200px;
+
+  }
+
+.requirement-box {
+    display: flex;
+    border-radius: 25px;
+    background-color: rgb(124, 47, 196);
+    width: 200px;
+    height: 100px;
+  }
+
+  .requirement-box:hover {
+    box-shadow: 1px 4px 3px rgba(224, 220, 220, 0.2);
+  }
+
+
+  .down-arrow {
+    opacity: 0;
+    align-self: right;
+  }
+
+  .requirement-box:hover .down-arrow {
+    opacity: 1;
+}
