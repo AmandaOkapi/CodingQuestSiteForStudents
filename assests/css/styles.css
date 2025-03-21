@@ -18,11 +18,15 @@
   }
 
 .requirement-box {
-    display: flex;
     border-radius: 25px;
     background-color: rgb(124, 47, 196);
     width: 200px;
     height: 100px;
+  }
+
+  .hints-box {
+    border-radius: 25px;
+    background-color: rgb(47, 179, 196);
   }
 
   .requirement-box:hover {
