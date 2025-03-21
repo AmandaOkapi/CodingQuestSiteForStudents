@@ -1,6 +1,6 @@
 
 .bar {
-    background-color: rgb(43, 39, 255);
+    background-color: rgb(78, 146, 248);
   }
 
 .main {
@@ -12,28 +12,43 @@
     justify-content: center;
   }
 
-.container {
-    width: 200px;
-    
+.r-box-container {
+    width: 450px;
+    display: flex; 
+    flex-direction: column;
+    gap:10px
   }
 
 .requirement-box {
     border-radius: 25px;
     background-color: rgb(124, 47, 196);
-    width: 200px;
-    height: 100px;
+    width: 450px;
+    height: auto;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    gap:15px
   }
 
   .hints-box {
     border-radius: 25px;
     background-color: rgb(47, 179, 196);
+    width: 450px;
   }
 
+  
+  .hints-line {
+    display: flex;
+  }
   .requirement-box:hover {
     box-shadow: 1px 4px 3px rgba(224, 220, 220, 0.2);
   }
 
-
+  .green {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
   .down-arrow {
     opacity: 0;
     align-self: right;

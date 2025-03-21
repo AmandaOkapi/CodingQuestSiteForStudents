@@ -1,22 +1,60 @@
-const fs = require('fs');
-const readline = require('readline');
 
-function addParagraph() {
-    console.log("hiiii");
+function showHints() {
+    let parent = event.currentTarget; // Use the currentTarget to refer to the clicked button
+    let newDiv = parent.querySelector(".hints-box");
 
-    let container = document.getElementById("REQ-BOX");
-    container.style.height = "400px";
-    let newPara = document.createElement("p");
-    newPara.textContent = "This is a new paragraph!";
-    container.appendChild(newPara);
+    if (newDiv) {
+        // Toggle visibility of the hints box
+        newDiv.style.display = (newDiv.style.display === "none" || newDiv.style.display === "") ? "block" : "none";
+    }
+    
 }
 
+function stopPropagation(event) {
+    event.stopPropagation(); // This stops the event from propagating to parent elements
+}
+
+function updateButtonState(child) {
+    console.log("hiii");
+    const parent = child.parentElement;  // Get the parent element (which should be the button)
+    let checkboxes = [];
+
+    // Loop through the child elements of the parent
+    for (let i = 0; i < parent.children.length; i++) {
+        let childElem = parent.children[i];
+        
+        // Check if the child element is a checkbox (input type='checkbox')
+        if (childElem.tagName === 'DIV') {
+            console.log("hiii");
+
+            // Find checkboxes within divs
+            let inputs = childElem.getElementsByTagName('input');
+            for (let input of inputs) {
+                console.log("inputs");
+
+                if (input.type === 'checkbox') {
+                    checkboxes.push(input);
+                }
+            }
+        }
+    }
+    console.log(parent);
+    
+    // Check if all checkboxes are checked
+    let allChecked = checkboxes.every(checkbox => checkbox.checked);
+
+    if (allChecked) {
+        console.log("green");
+        parent.classList.add("green");  // Add green class
+    } else {
+        parent.classList.remove("green");  // Remove green class
+    }
+}
 
 async function makeButtonsFromFile(){
     const endString = "#END";
     const templateLength = 5;
 
-    console.log("hiiii");
     try {
         const response = await fetch('button-titles.txt'); // Ensure example.txt is in the same directory & served by a web server
         const text = await response.text();
@@ -40,16 +78,34 @@ async function makeButtonsFromFile(){
                 newButton = document.createElement("button");
                 newButton.classList.add("requirement-box");
                 newButton.textContent = line;
+                newButton.addEventListener("click", showHints);
                 container.appendChild(newButton);
 
                 newDiv = document.createElement("div");
                 newDiv.classList.add("hints-box");
                 newButton.appendChild(newDiv);
-
+                //make the hints invisible
+                newDiv.style.display = "none";
             } else {
+                let newLineDiv = document.createElement("div")
+                newLineDiv.classList.add("hints-line");
                 let newPara = document.createElement("p");
                 newPara.textContent = line;
-                newDiv.appendChild(newPara);
+
+                let newCheckBox = document.createElement("input");
+                newCheckBox.type = "checkbox";
+                newCheckBox.addEventListener("click", stopPropagation);
+
+
+
+                newLineDiv.appendChild(newCheckBox);
+                newLineDiv.appendChild(newPara);
+                newDiv.appendChild(newLineDiv);
+
+                
+                newCheckBox.addEventListener("change", () => {
+                    updateButtonState(newDiv);
+                });
             }
         }
     } catch (error) {
