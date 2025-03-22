@@ -4,7 +4,6 @@
   }
 
 .main {
-    background-color: rgb(28, 27, 77);
     align-items: center;
     display: flex;
     flex-direction: column;
@@ -39,6 +38,7 @@
   
   .hints-line {
     display: flex;
+    flex-direction: row;
   }
   .requirement-box:hover {
     box-shadow: 1px 4px 3px rgba(224, 220, 220, 0.2);

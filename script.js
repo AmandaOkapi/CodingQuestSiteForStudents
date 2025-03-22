@@ -14,42 +14,7 @@ function stopPropagation(event) {
     event.stopPropagation(); // This stops the event from propagating to parent elements
 }
 
-function updateButtonState(child) {
-    console.log("hiii");
-    const parent = child.parentElement;  // Get the parent element (which should be the button)
-    let checkboxes = [];
 
-    // Loop through the child elements of the parent
-    for (let i = 0; i < parent.children.length; i++) {
-        let childElem = parent.children[i];
-        
-        // Check if the child element is a checkbox (input type='checkbox')
-        if (childElem.tagName === 'DIV') {
-            console.log("hiii");
-
-            // Find checkboxes within divs
-            let inputs = childElem.getElementsByTagName('input');
-            for (let input of inputs) {
-                console.log("inputs");
-
-                if (input.type === 'checkbox') {
-                    checkboxes.push(input);
-                }
-            }
-        }
-    }
-    console.log(parent);
-    
-    // Check if all checkboxes are checked
-    let allChecked = checkboxes.every(checkbox => checkbox.checked);
-
-    if (allChecked) {
-        console.log("green");
-        parent.classList.add("green");  // Add green class
-    } else {
-        parent.classList.remove("green");  // Remove green class
-    }
-}
 
 async function makeButtonsFromFile(){
     const endString = "#END";
@@ -84,18 +49,45 @@ async function makeButtonsFromFile(){
                 newDiv = document.createElement("div");
                 newDiv.classList.add("hints-box");
                 newButton.appendChild(newDiv);
+
+                //checkmark data
+                newButton.dataset.checkBoxCnt =0;
+                newButton.dataset.checkedCnt=0;
+
                 //make the hints invisible
                 newDiv.style.display = "none";
             } else {
                 let newLineDiv = document.createElement("div")
                 newLineDiv.classList.add("hints-line");
+
                 let newPara = document.createElement("p");
                 newPara.textContent = line;
+                newPara.style.wordBreak = "break-word";
+                newPara.style.overflowWrap= "break-word";
 
                 let newCheckBox = document.createElement("input");
                 newCheckBox.type = "checkbox";
                 newCheckBox.addEventListener("click", stopPropagation);
-
+                
+                //checkbox data management
+                newButton.dataset.checkBoxCnt++;
+                newCheckBox.addEventListener("change", function(){
+                    //depenedent on newButton->newDiv->newLine->checkbox hierarchy
+                    //this code is fire
+                    let box = event.currentTarget;
+                    let parent = box.parentElement.parentElement.parentElement;
+                    console.log(parent);
+                    if(this.checked){
+                        parent.dataset.checkedCnt++;
+                    }else{
+                        parent.dataset.checkedCnt--;
+                    }
+                    if(parent.dataset.checkBoxCnt <= parent.dataset.checkedCnt){
+                        parent.classList.add("green");
+                    }else{
+                        parent.classList.remove("green");
+                    }
+                });
 
 
                 newLineDiv.appendChild(newCheckBox);
@@ -103,9 +95,7 @@ async function makeButtonsFromFile(){
                 newDiv.appendChild(newLineDiv);
 
                 
-                newCheckBox.addEventListener("change", () => {
-                    updateButtonState(newDiv);
-                });
+
             }
         }
     } catch (error) {
